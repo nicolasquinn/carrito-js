@@ -7,7 +7,6 @@ const listaCursos = document.querySelector('#lista-cursos')
 let articulosCarrito = []; 
 
 cargarEventListeners();
-
 function cargarEventListeners() {
 
     // Cuando clickeo el botón "AGREGAR AL CARRITO"
@@ -15,7 +14,6 @@ function cargarEventListeners() {
 
 }
 
-// Funciones
 
 function agregarCurso(e) {
 
@@ -28,10 +26,10 @@ function agregarCurso(e) {
 
 }
 
-// Tomar la información del curso que clickeamos
+// Registro toda la información del curso clickeado a partir del elemento padre (cursoSeleccionado)
 function leerDatosCurso (curso) {
 
-    // Creo un objeto con el contenido del curso seleccionado
+    // Creo un objeto para almacenar en él los valores de un curso.
     const infoCurso = {
         imagen: curso.querySelector('img').src,
         titulo: curso.querySelector('h4').textContent,
@@ -40,26 +38,39 @@ function leerDatosCurso (curso) {
         cantidad: 1
     }
 
+    // Revisa si un elemento ya existe en el carrito.
+    const existe = articulosCarrito.some( curso => curso.id === infoCurso.id );
+    if (existe) {
+        const cursos = articulosCarrito.map(curso => {
+            if (curso.id === infoCurso.id) {
+                curso.cantidad++
+                return curso;
+            } else {
+                return curso;
+            }
+        });
+        articulosCarrito = [...cursos];
+    } else {
+        articulosCarrito = [...articulosCarrito, infoCurso];
+        return curso;
+    }
+
     // Agrega elementos al arreglo de carrito.
-    articulosCarrito = [...articulosCarrito, infoCurso];
-    console.log(articulosCarrito);
-    
     carritoHTML();
 
 }
 
-// Muestra el carrito de compras en el HTML
-
+// Función para crear e insertar los cursos como HTML en el menú del carrito.
 function carritoHTML () {
 
     // Limpio el HTML previo
     limpiarHTML()
     
-    // Itera sobre el array articulosCarrito y crea el HTML para seguidamente insertarlo.
+    // Itera sobre el array articulosCarrito y crea el HTML para insertarlo en el menú.
     articulosCarrito.forEach( elemento => {
         const {imagen, titulo, precio, id, cantidad} = elemento; // Aplico destructuring de objetos para ordenar el código
-        const row = document.createElement('TR');
-        row.innerHTML = `
+        const row = document.createElement('TR'); // Creo un elemento tipo <tr> por cada iteración, donde van a estar los valores de cada curso a partir del objeto creado antes.
+        row.innerHTML = ` 
             <td>
                 <img src="${imagen}" width="160">
             </td>
@@ -78,14 +89,15 @@ function carritoHTML () {
         `
         // Agrego el HTML creado en el tbody
         contenedorCarrito.appendChild(row);
+
     })
 }
 
 // Elimina los cursos del tbody para que no se repliquen con el spread operator
-
 function limpiarHTML () {
     // "Forma lenta" para limpiar el HTML.
     // contenedorCarrito.innerHTML = ''
+
     // "Forma rápida" para limpiar el HTML.
     while (contenedorCarrito.firstChild) { // Revisa si el tbody tiene un elemento hijo
         contenedorCarrito.removeChild(contenedorCarrito.firstChild); // Si lo tiene, lo remueve.
