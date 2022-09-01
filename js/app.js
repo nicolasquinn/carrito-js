@@ -12,8 +12,14 @@ function cargarEventListeners() {
     // Cuando clickeo el botón "AGREGAR AL CARRITO"
     listaCursos.addEventListener('click', agregarCurso);
 
-    // Cuando clickeo
+    // Cuando clickeo el botón "X"
     carrito.addEventListener('click', eliminarCurso)
+
+    // Cuando clickeo el botón de "VACIAR CARRITO"
+    vaciarCarritoBtn.addEventListener('click', () => {
+        articulosCarrito = [];
+        limpiarHTML();
+    })
 
 }
 
