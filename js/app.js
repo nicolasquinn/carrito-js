@@ -1,9 +1,10 @@
 // Variables
 
-const carrito = document.querySelector('#carrito');
+const carrito = document.querySelector('#carrito'); 
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const vaciarCarritoBtn = document.querySelector('#vaciar-carrito');
 const listaCursos = document.querySelector('#lista-cursos')
+let articulosCarrito = []; 
 
 cargarEventListeners();
 
@@ -28,10 +29,7 @@ function agregarCurso(e) {
 }
 
 // Tomar la información del curso que clickeamos
-
 function leerDatosCurso (curso) {
-
-    console.log(curso)
 
     // Creo un objeto con el contenido del curso seleccionado
     const infoCurso = {
@@ -42,6 +40,44 @@ function leerDatosCurso (curso) {
         cantidad: 1
     }
 
-    console.log(infoCurso)
+    // Agrega elementos al arreglo de carrito.
+    articulosCarrito = [...articulosCarrito, infoCurso];
+    console.log(articulosCarrito);
+    
+    carritoHTML();
 
+}
+
+// Muestra el carrito de compras en el HTML
+
+function carritoHTML () {
+
+    // Limpio el HTML previo
+    limpiarHTML()
+    
+    // Itera sobre el array articulosCarrito y crea el HTML para seguidamente insertarlo.
+    articulosCarrito.forEach( elemento => {
+        
+        // Limpiar el HTML
+
+        const row = document.createElement('TR');
+        row.innerHTML = `
+            <td>
+                ${elemento.titulo}
+            </td>
+        `
+        // Agrego el HTML creado en el tbody
+        contenedorCarrito.appendChild(row);
+    })
+}
+
+// Elimina los cursos del tbody para que no se repliquen con el spread operator
+
+function limpiarHTML () {
+    // "Forma lenta" para limpiar el HTML.
+    // contenedorCarrito.innerHTML = ''
+    // "Forma rápida" para limpiar el HTML.
+    while (contenedorCarrito.firstChild) { // Revisa si el tbody tiene un elemento hijo
+        contenedorCarrito.removeChild(contenedorCarrito.firstChild); // Si lo tiene, lo remueve.
+    }
 }
