@@ -57,13 +57,23 @@ function carritoHTML () {
     
     // Itera sobre el array articulosCarrito y crea el HTML para seguidamente insertarlo.
     articulosCarrito.forEach( elemento => {
-        
-        // Limpiar el HTML
-
+        const {imagen, titulo, precio, id, cantidad} = elemento; // Aplico destructuring de objetos para ordenar el código
         const row = document.createElement('TR');
         row.innerHTML = `
             <td>
-                ${elemento.titulo}
+                <img src="${imagen}" width="160">
+            </td>
+            <td>
+                ${titulo}
+            </td>
+            <td>
+                ${precio}
+            </td>
+            <td>
+                ${cantidad}
+            </td>
+            <td>
+                <a href="#" class="borrar-curso" data-id="${id}"> X </a>
             </td>
         `
         // Agrego el HTML creado en el tbody
