@@ -9,6 +9,12 @@ let articulosCarrito = [];
 cargarEventListeners();
 function cargarEventListeners() {
 
+    // Al cargar el documento - Local Storage
+    document.addEventListener('DOMContentLoaded', () => {
+        articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carritoHTML();
+    })
+
     // Cuando clickeo el botón "AGREGAR AL CARRITO"
     listaCursos.addEventListener('click', agregarCurso);
 
@@ -41,6 +47,7 @@ function eliminarCurso (e) {
         const cursoId = e.target.getAttribute('data-id');
         articulosCarrito = articulosCarrito.filter( curso => curso.id !== cursoId );
         carritoHTML();
+        sincronizarStorage();
     }
 }
 
@@ -73,6 +80,7 @@ function leerDatosCurso (curso) {
     }
 
     // Agrega elementos al arreglo de carrito.
+    sincronizarStorage();
     carritoHTML();
 
 }
@@ -119,4 +127,9 @@ function limpiarHTML () {
     while (contenedorCarrito.firstChild) { // Revisa si el tbody tiene un elemento hijo
         contenedorCarrito.removeChild(contenedorCarrito.firstChild); // Si lo tiene, lo remueve.
     }
+}
+
+// Sincronizar el local storage con el array de carrito.
+function sincronizarStorage() {
+    localStorage.setItem('carrito', JSON.stringify(articulosCarrito));
 }
